@@ -1,5 +1,5 @@
 module.exports = {
-    testMatch: ['<rootDir>/src/tests/**/*.test.js', '<rootDir>/src/tests/**/*.spec.js'],
+  testMatch: ['<rootDir>/src/tests/**/*.test.js', '<rootDir>/src/tests/**/*.spec.js'],
   reporters: [
     "default",
     ["jest-html-reporter", {

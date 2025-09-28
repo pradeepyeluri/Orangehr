@@ -1,41 +1,54 @@
 const { chromium } = require('playwright');
-class LoginPage {
-  constructor() {
+const { PlayWrightHelper, PlaywrightHelper } = require('../utilities/PlaywrightHelper')
+
+class LoginPage
+{
+  page;
+  usernameTextbox;
+  passwordTextbox;
+  submitButton;
+
+  constructor(page)
+  {
     // Mock user data (in real-world apps, this comes from a database or API)
     this.users = [
       { username: "admin", password: "admin123" },
       { username: "testuser", password: "test123" }
     ];
+
+    this.page = page;
+    this.usernameTextbox = this.page.locator('input[name="username"]');
+    this.passwordTextbox = this.page.locator('input[name="password"]');
+    this.submitButton = this.page.locator('button[type="submit"]');
   }
 
-  async login(username, password, page) {
-    page = page 
+  async login(username, password)
+  {
+    // page = page
 
-   await page.goto('https://opensource-demo.orangehrmlive.com/');
+    await this.page.goto('https://opensource-demo.orangehrmlive.com/');
+
+    // await this.page.waitForTimeout(10000);
 
     // Enter username and password
-    await page.fill('input[name="username"]', 'Admin');
-    await page.fill('input[name="password"]', 'admin123');
+    // await page.fill('input[name="username"]', 'Admin');    
+    // await page.fill('input[name="password"]', 'admin123');
+
+    PlaywrightHelper.fill(await this.usernameTextbox, 'Admin')
+    await this.page.waitForTimeout(3000);
+    PlaywrightHelper.fill(await this.passwordTextbox, 'admin123')
+    await this.page.waitForTimeout(3000);
 
     // Click login
-    await page.click('button[type="submit"]');
+    // await page.click('button[type="submit"]');
+    PlaywrightHelper.click(await this.submitButton)
+
 
 
     // Wait for Dashboard heading to ensure login success 
-    await page.waitForSelector('h6:has-text("Dashboard")');
+    await this.page.waitForSelector('h6:has-text("Dashboard")');
 
     console.log('Login successful.');
-    //  const user = this.users.find(
-    //   (u) => u.username === username && u.password === password
-    // );
-
-    // if (user) {
-    //   console.log(`✅ Login successful for user: ${username}`);
-    //   return true;
-    // } else {
-    //   console.log("❌ Invalid username or password");
-    //   return false;
-    // }
   }
 }
 
